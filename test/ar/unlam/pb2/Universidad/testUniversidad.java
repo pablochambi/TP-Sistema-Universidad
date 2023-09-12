@@ -172,20 +172,21 @@ public class testUniversidad {
 		assertTrue(unlam.ingresarAlumno(alumno2));
 		
 		assertTrue(unlam.crearUnCurso(codCurso,codMat,horario,cicloLectivo,codAula));
+		
 		assertTrue(unlam.inscribirUnProfeAUnCurso(dniPro, codCurso));
 		assertTrue(unlam.inscribirUnProfeAUnCurso(dniPro2, codCurso));
-		assertTrue(unlam.inscribirUnAlumnoAUnCurso(dniAlu, codCurso));
-		assertTrue(unlam.inscribirUnAlumnoAUnCurso(dniAlu2, codCurso));
 		
-		Integer cantDeAlumnosEnUnCursoEsperado = 2;
+		assertTrue(unlam.inscribirUnAlumnoAUnCurso(dniAlu, codCurso));
+		assertFalse(unlam.inscribirUnAlumnoAUnCurso(dniAlu, codCurso));//Falso porque es el mismo alumno
+		
+		Integer cantDeAlumnosEnUnCursoEsperado = 1;
 		Integer cantDeAlumnosEnUnCurso = unlam.cantDeAlumnosDeUnCurso(codCurso);
 		Alumno aluEsperado1 = new Alumno(dniAlu, nomAlu, apeAlu);
 		Alumno aluEsperado2 = new Alumno(dniAlu2, nomAlu2, apeAlu2);
 		ArrayList<Alumno> alumnosObtenidos = unlam.obtenerAlumnosDeUnCurso(codCurso);
 		//Los ALumnos Estan Cargados a un Curso correctamente pero en distinto orden
 		assertEquals(cantDeAlumnosEnUnCursoEsperado, cantDeAlumnosEnUnCurso);
-		assertEquals(aluEsperado1,alumnosObtenidos.get(1));
-		assertEquals(aluEsperado2,alumnosObtenidos.get(0));
+		assertEquals(aluEsperado1,alumnosObtenidos.get(0));
 	}
 	
 	//que un Alumno no se pueda inscribir dos veces a una misma materia en distintos cursos
