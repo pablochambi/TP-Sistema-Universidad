@@ -1,20 +1,22 @@
 package ar.unlam.pb2.Universidad;
 
+import java.util.HashSet;
 import java.util.Objects;
 
 public class Materia {
 
+	private static Integer NEXT_ID = 1;
+	private Integer id;
 	private Integer codigo;
 	private String nombre;
+	private HashSet <Materia> materiasCorrelativas;
 
 	public Materia(Integer codigo, String nombre) {
-		this.codigo=codigo;
-		this.nombre=nombre;
-	}
-
-	public Materia() {
-		this.codigo = 0;
-		this.nombre = "\0";
+		this.codigo = codigo;
+		this.nombre = nombre;
+		this.materiasCorrelativas = new HashSet<>();
+		this.id = NEXT_ID;
+		NEXT_ID++;
 	}
 
 	public String getNombre() {
@@ -33,6 +35,18 @@ public class Materia {
 		this.codigo = codigo;
 	}
 
+	public Integer getId() {
+		return id;
+	}
+	
+	public HashSet <Materia> getMateriasCorrelativas() {
+		return materiasCorrelativas;
+	}
+
+	public Integer cantidadDeMateriasCorrelativas() {
+		return this.materiasCorrelativas.size();
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(codigo);
@@ -49,8 +63,11 @@ public class Materia {
 		Materia other = (Materia) obj;
 		return Objects.equals(codigo, other.codigo);
 	}
-	
+
+	public Boolean eliminarCorrelativa(Materia materiaCorrelativaBus) {
+		return this.materiasCorrelativas.remove(materiaCorrelativaBus);
+	}
 
 	
-	
+
 }

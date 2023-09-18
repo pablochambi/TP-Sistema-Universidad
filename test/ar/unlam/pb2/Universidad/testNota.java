@@ -12,6 +12,7 @@ public class testNota {
 		TipoParcial tipoParcial = TipoParcial.PRIMER_PARCIAL;
 		Integer valor = 7;
 		
+		
 		Nota nota = new Nota(tipoParcial,valor);
 		
 		assertEquals(valor,nota.getValor());

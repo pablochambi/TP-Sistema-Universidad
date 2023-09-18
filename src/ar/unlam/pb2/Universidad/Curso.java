@@ -5,57 +5,35 @@ import java.util.Objects;
 public class Curso {
 
 	private Integer codigo;
-	private Materia materia;
-	private Horario horario;
-	private CicloLectivo cicloLectivo;
+	private Comision comision;
 	private Aula aula;
 	
-	public Curso(Integer codigo, Materia materia, Horario horario, 
-			CicloLectivo cicloLectivo, Aula aula) {
+	public Curso(Integer codigo, Comision comision, Aula aula) {
 		this.codigo = codigo;
-		this.materia = materia;
-		this.horario = horario;
-		this.cicloLectivo = cicloLectivo;
 		this.aula = aula;
+		this.comision = comision;
 	}
-
-	public Materia getMateria() {
-		return materia;
+	public Integer getCodigo() {
+		return codigo;
 	}
-
-	public void setMateria(Materia materia) {
-		this.materia = materia;
+	public void setCodigo(Integer codigo) {
+		this.codigo = codigo;
 	}
-
-	public Horario getHorario() {
-		return horario;
+	public Comision getComision() {
+		return comision;
 	}
-
-	public void setHorario(Horario horario) {
-		this.horario = horario;
+	public void setComision(Comision comision) {
+		this.comision = comision;
 	}
-
-	public CicloLectivo getCicloLectivo() {
-		return cicloLectivo;
-	}
-
-	public void setCicloLectivo(CicloLectivo cicloLectivo) {
-		this.cicloLectivo = cicloLectivo;
-	}
-
 	public Aula getAula() {
 		return aula;
 	}
-
 	public void setAula(Aula aula) {
 		this.aula = aula;
 	}
 
-	public Integer getCodigo() {
-		return codigo;
-	}
 
-	
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(codigo);

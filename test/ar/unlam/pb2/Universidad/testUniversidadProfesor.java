@@ -7,16 +7,6 @@ import org.junit.Test;
 public class testUniversidadProfesor {
 
 	@Test
-	public void queSePuedaCrearUnaUniversidad() {
-		String nombre ="Unlam";
-		Universidad unlam = new Universidad(nombre);
-		Integer cantEsperada = 0;
-		assertEquals(nombre,unlam.getNombre());
-		assertEquals(cantEsperada,unlam.getCantidadDeProfesIngresados());
-	}
-	
-	
-	@Test
 	public void queSePuedaIngresarAUnProfe() {
 		Universidad unlam = new Universidad("Unlam");
 		Profesor profe = new Profesor(22, "Micaela", "Sofia");

@@ -2,39 +2,47 @@ package ar.unlam.pb2.Universidad;
 
 import static org.junit.Assert.*;
 
+import java.time.LocalDate;
+
 import org.junit.Test;
 
 public class testPersona {
 
 	@Test
-	public void queSePuedaCrearUnaPersona() {
-
-		String nombre = "Diego";
-		String apellido = "Maradona";
-		Integer dni = 22;
-		Persona p = new Persona(dni,nombre,apellido);
-		assertEquals(nombre,p.getNombre());
+	public void queSePuedaCrearProfesConIdIncremental() {
 		
+		String nombre = "Juan";
+		String apellido = "Perez";
+		Integer dni = 234352;
+		Profesor profesor = new Profesor(dni,nombre,apellido);
+		Profesor otroProfesor = new Profesor(534535,"Carlos","Perrone");
+		Profesor otro2Profesor = new Profesor(999765,"Marcos","gdf");
+		
+		assertEquals(nombre,profesor.getNombre());
+		assertEquals((Integer)1,profesor.getId());
+		assertEquals((Integer)2,otroProfesor.getId());
+		assertEquals((Integer)3,otro2Profesor.getId());
 	}
+	
 	@Test
-	public void queSePuedaCrearUnProfe() {
+	public void queSePuedaCrearAlumnosConIdIncremental() {
 		
-		String nombre = "Diego";
-		String apellido = "Maradona";
-		Integer dni = 22;
-		Persona p = new Profesor(dni,nombre,apellido);
-		assertEquals(nombre,p.getNombre());
+		Integer dni = 22443;
+		String nombre = "Marcelo";
+		String apellido = "Perez";
+		LocalDate fechaNac = LocalDate.of(1998, 10, 4),
+				fechaIngreso = LocalDate.of(2022, 4, 4);
 		
-	}
-	@Test
-	public void queSePuedaCrearUnAlumno() {
+		Alumno alumno = new Alumno(dni,nombre,apellido,fechaNac,fechaIngreso);
+		Alumno otroAlumno = new Alumno(767,nombre,apellido,fechaNac,fechaIngreso);
+		Alumno otroAlumno2 = new Alumno(876,nombre,apellido,fechaNac,fechaIngreso);
 		
-		String nombre = "Diego";
-		String apellido = "Maradona";
-		Integer dni = 22;
-		Persona p = new Alumno(dni,nombre,apellido);
-		assertEquals(nombre,p.getNombre());
-		
+		assertEquals(nombre,alumno.getNombre());
+		assertEquals((Integer)1, alumno.getId());
+		assertEquals((Integer)2, otroAlumno.getId());
+		assertEquals((Integer)3, otroAlumno2.getId());
 	}
 
+
+	
 }

@@ -11,6 +11,7 @@ public class Horario {
 		this.hora = hora;
 		this.dias = dias;
 	}
+	
 
 	@Override
 	public int hashCode() {

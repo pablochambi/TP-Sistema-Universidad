@@ -9,7 +9,7 @@ public class MateriaCorrelativa {
 		this.materia = materia;
 		this.correlativa = correlativa;
 	}
-
+ 
 	public Materia getMateria() {
 		return materia;
 	}

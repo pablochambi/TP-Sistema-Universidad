@@ -10,10 +10,11 @@ public class Universidad {
 	private HashSet<Materia> materias;
 	private HashSet<Profesor> profesores;
 	private HashSet<Alumno> alumnos;
-	private HashSet<MateriaCorrelativa> materiasCorrelativas;
 	private HashSet<Curso> cursos;
 	private HashSet<CursoAlumno> cursosAlumnos;
 	private HashSet<CursoProfe> cursosProfes;
+	private HashSet<CicloLectivo> ciclosLectivos;
+	private HashSet<Comision> comisiones;
 	
 	public Universidad(String nombre) {
 		this.nombre = nombre;
@@ -21,10 +22,11 @@ public class Universidad {
 		this.materias = new HashSet<>();
 		this.profesores = new HashSet<>();
 		this.alumnos = new HashSet<>();
-		this.materiasCorrelativas = new HashSet<>();
 		this.cursosAlumnos = new HashSet<>();
 		this.cursosProfes = new HashSet<>();
 		this.cursos = new HashSet<>();
+		this.ciclosLectivos = new HashSet<>();
+		this.comisiones = new HashSet<>();
 	}
 
 	public String getNombre() {
@@ -42,9 +44,6 @@ public class Universidad {
 	public HashSet<Alumno> getAlumnos() {
 		return alumnos;
 	}
-	public HashSet<MateriaCorrelativa> getMateriasCorrelativas() {
-		return materiasCorrelativas;
-	}
 	public HashSet<Curso> getCursos() {
 		return cursos;
 	}
@@ -53,38 +52,6 @@ public class Universidad {
 	}
 	public HashSet<CursoProfe> getCursosProfes() {
 		return cursosProfes;
-	}
-
-
-
-
-	public Boolean registrarUnProfeAUnCurso(Profesor profe, Curso curso) {
-		Curso cursoBus = buscarCurso(curso);
-		Profesor profeBus = buscarProfe(profe);
-		if(cursoBus!=null && profeBus!=null) {
-			CursoProfe cursoProfe = new CursoProfe(cursoBus, profeBus);
-			return this.cursosProfes.add(cursoProfe);
-		}
-		return false;
-	}
-	
-
-	private Curso buscarCurso(Curso curso) {
-		for(Curso cur: this.cursos) {
-			if(cur.equals(curso)) {
-				return cur;
-			}
-		}
-		return null;
-	}
-
-	private Profesor buscarProfe(Profesor profe) {
-		for(Profesor pro: this.profesores) {
-			if(pro.equals(profe)) {
-				return pro;
-			}
-		}
-		return null;
 	}
 
 	public Profesor buscarProfePorCurso(Curso curso) {
@@ -152,44 +119,44 @@ public class Universidad {
 		return this.profesores.size();
 	}
 
-	public Boolean crearUnCurso(Integer comision, Integer codMat, Horario horario,
-							CicloLectivo cicloLectivo, Integer codAula) {
-		Boolean resultado = false;
-		Materia materiaBus = buscarMateriaPorCodigo(codMat);
-		Aula aulaBus = buscarAulaPorCodigo(codAula);
-		
-		if(materiaBus==null || aulaBus==null) {
-			return false;
-		}
-		
-		if(this.cantidadDeCursos()==0) {
-			Curso curso = new Curso(comision, materiaBus, horario, cicloLectivo, aulaBus);
-			return this.cursos.add(curso);
-		}
-		
-		for(Curso cur: this.cursos) {
-			Boolean horariosIguales = cur.getHorario().equals(horario);
-			Boolean ciclosLectivosIguales =cur.getCicloLectivo().equals(cicloLectivo);
-			Boolean aulasIguales = cur.getAula().equals(aulaBus);
-			Boolean materiasIguales = cur.getMateria().equals(materiaBus);
-			
-			if( (materiasIguales && horariosIguales && ciclosLectivosIguales && !aulasIguales)||
-				(materiasIguales && horariosIguales && !ciclosLectivosIguales && aulasIguales)||
-				(materiasIguales && !horariosIguales && ciclosLectivosIguales && aulasIguales)
-					) {
-				return this.cursos.add(new Curso(comision, materiaBus, horario, cicloLectivo, aulaBus));
-			}
-		}
-		return resultado;
-		
-	}
+//	public Boolean crearUnCurso(Integer comision, Integer codMat, Horario horario,
+//							CicloLectivo cicloLectivo, Integer codAula) {
+//		Materia materiaBus = buscarMateriaPorCodigo(codMat);
+//		Aula aulaBus = buscarAulaPorCodigo(codAula);
+//		
+//		if(materiaBus==null || aulaBus==null) {
+//			return false;
+//		}
+//		
+//		if(this.cantidadDeCursos()==0) {
+//			Curso curso = new Curso(comision, materiaBus, horario, cicloLectivo, aulaBus);
+//			return this.cursos.add(curso);
+//		}
+//		
+//		for(Curso cur: this.cursos) {
+//			Boolean horariosIguales = cur.getHorario().equals(horario);
+//			Boolean ciclosLectivosIguales =cur.getCicloLectivo().equals(cicloLectivo);
+//			Boolean aulasIguales = cur.getAula().equals(aulaBus);
+//			Boolean materiasIguales = cur.getMateria().equals(materiaBus);
+//			
+//			//Me aseguro que por lo menos no sea igual un campo
+//			if(materiasIguales &&  horariosIguales && ciclosLectivosIguales && aulasIguales) {
+//				return false;
+//			}
+//		}
+//		return this.cursos.add(new Curso(comision, materiaBus, horario, cicloLectivo, aulaBus));
+//	}
 	
+	
+	//QueNoSePuedaAsignarMasDeUnaMateriaAUnCurso
+	//QueNoSepuedaAsignarMasDeUnAulaAUnCurso
+	//QueNoSePuedaAsignarUnaMateriaAUnAulaOcupada
 
 	
 
 	private Aula buscarAulaPorCodigo(Integer codAula) {
 		for(Aula aula: this.aulas) {
-			if(aula.getId().equals(codAula)) {
+			if(aula.getNumero().equals(codAula)) {
 				return aula;
 			}
 		}
@@ -216,7 +183,7 @@ public class Universidad {
 	public Materia obtenerMateriaPorCodigoDeCurso(Integer codCurso) {
 		for(Curso curso: this.cursos) {
 			if(curso.getCodigo().equals(codCurso)) {
-				return curso.getMateria();
+				return curso.getComision().getMateria();
 			}
 		}
 		return null;
@@ -226,13 +193,31 @@ public class Universidad {
 		Profesor profeBus = buscarProfePorDni(dniPro);
 		Curso cursoBus = buscarCursoPorCodigo(codCurso);
 		
-		if(profeBus == null || cursoBus == null) {
+		if(profeBus == null || cursoBus == null)
 			return false;
+		
+		
+		//Si no esta cargado ninguna asignacion CursoProfe se ejecuta primero este codigo
+		if(this.cursosProfes.size()==0) {
+			CursoProfe cursoProfe = new CursoProfe(cursoBus, profeBus);
+			return this.cursosProfes.add(cursoProfe);
 		}
 		
-		return this.registrarUnProfeAUnCurso(profeBus, cursoBus);
+		for(CursoProfe curPro: this.cursosProfes) {
+			
+			Boolean cursosConIgualHorario = curPro.getCurso().getHorario().equals(cursoBus.getHorario());
+			Boolean cursosConIgualCicloectivo = curPro.getCurso().getCicloLectivo().equals(cursoBus.getCicloLectivo());
+			Boolean cursosConElMismoProfe = curPro.getProfe().equals(profeBus);
+			
+			if(cursosConIgualHorario && cursosConIgualCicloectivo && cursosConElMismoProfe) {
+				return false;
+			}
+		}
+		
+		return this.cursosProfes.add(new CursoProfe(cursoBus, profeBus));
 		
 	}
+	
 
 	private Curso buscarCursoPorCodigo(Integer codCurso) {
 		for(Curso cur: this.cursos) {
@@ -259,6 +244,13 @@ public class Universidad {
 		
 		if(alumnoBus==null || cursoBus ==null)
 			return false;
+		
+		cursoBus.getAula().getCantMax();
+		
+		if(cantDeAlumnosDeUnCurso(codCurso) >= cursoBus.getAula().getCantMax()) {
+			return false;
+		}
+		
 		
 		CursoAlumno cursoAlumno = new CursoAlumno(cursoBus, alumnoBus);
 		
@@ -295,6 +287,98 @@ public class Universidad {
 		}
 		return listaDeAlumnos;
 	}
+
+	public Integer obtenerCantidadDeMaterias() {
+		return this.materias.size();
+	}
+
+	public Boolean crearCicloLectivo(CicloLectivo cicloL) {
+		return this.ciclosLectivos.add(cicloL);
+	}
+
+	public Integer obtenerCantidadDeCiclosLectivosIngresados() {
+		return this.ciclosLectivos.size();
+	}
+
+	public Boolean registrarComision(Comision nueva) {
+		return this.comisiones.add(nueva);
+	}
+
+	public Integer obtenerCantidadDeComisiones() {
+		return this.comisiones.size();
+	}
+
+	public Boolean registrarComision(Integer numComision, Integer codMateria, 
+			Integer codCicloL, Turno turno,Dias dias) {
+		// TODO Auto-generated method stub
+		Materia materiaBus = buscarMateriaPorCodigo(codMateria);
+		CicloLectivo cicloLBus = buscarCicloLectivoPorCodigo(codCicloL);
+		
+		if(materiaBus==null ||cicloLBus==null) {
+			return false;
+		}
+		
+		Comision comision = new Comision(numComision, materiaBus, cicloLBus, turno, dias);
+		return this.comisiones.add(comision);
+		
+	}
+
+	private CicloLectivo buscarCicloLectivoPorCodigo(Integer codCicloL) {
+		for(CicloLectivo cl: this.ciclosLectivos) {
+			if(cl.getCodigo().equals(codCicloL)) {
+				return cl;
+			}
+		}
+		return null;
+	}
+
+	public Boolean crearUnCurso(Integer codCurso, Integer numComision, Integer numAula) {
+		Comision comisionBus = buscarComisionPorCodigo(numComision);
+		Aula aulaBus = buscarAulaPorCodigo(numAula);
+		if(comisionBus==null ||aulaBus==null) {
+			return false;
+		}
+		Curso curso = new Curso(codCurso, comisionBus, aulaBus);
+		return this.cursos.add(curso);
+		
+	}
+
+	private Comision buscarComisionPorCodigo(Integer numComision) {
+		for(Comision comision:this.comisiones) {
+			if(comision.getNumeroCom().equals(numComision)) {
+				return comision;
+			}
+		}
+		return null;
+	}
+
+	public Integer obtenerCantidadDeCursos() {
+		return this.cursos.size();
+	}
+
+	public Boolean asignarUnaMateriaCorrelativa(Integer codMateria, Integer codMateriaCorrelativa) {
+		Materia materiaBus = buscarMateriaPorCodigo(codMateria);
+		Materia materiaCorrelativaBus = buscarMateriaPorCodigo(codMateriaCorrelativa);
+		
+		if(materiaBus==null || materiaCorrelativaBus==null)
+			return false;
+		
+		
+		return materiaBus.getMateriasCorrelativas().add(materiaCorrelativaBus);
+		
+	}
+
+	public Boolean eliminarUnaMateriaCorrelativa(Integer codMateria, Integer codMateriaCorrelativa) {
+		Materia materiaBus = buscarMateriaPorCodigo(codMateria);
+		Materia materiaCorrelativaBus = buscarMateriaPorCodigo(codMateriaCorrelativa);
+		
+		if(materiaBus==null || materiaCorrelativaBus==null)
+			return false;
+		
+		return materiaBus.eliminarCorrelativa(materiaCorrelativaBus);
+		
+	}
+
 
 	
 
