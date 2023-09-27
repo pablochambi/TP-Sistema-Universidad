@@ -8,7 +8,11 @@ public class Aula {
 	private Integer id;
 	private Integer numAula;
 	private Integer cantMax;
-
+	
+	public Aula() {
+		this.id=NEXT_ID=1;
+	}
+	
 	public Aula(Integer numAula, Integer cantMax) {
 		this.numAula=numAula;
 		this.cantMax=cantMax;
@@ -16,8 +20,6 @@ public class Aula {
 		NEXT_ID++;
 	}
 	
-	
-
 	public Integer getCantMax() {
 		return cantMax;
 	}

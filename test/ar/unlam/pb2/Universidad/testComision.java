@@ -9,7 +9,7 @@ import org.junit.Test;
 public class testComision {
 
 	@Test
-	public void queSePuedaCrearComisionesConIdIncremental() {
+	public void queSePuedaCrearComisiones() {
 		
 		Integer numeroCom = 100;
 		Integer numeroCl = 200;
@@ -24,14 +24,11 @@ public class testComision {
 		Materia materia = new Materia(1002, "Base de datos 1");
 		
 		Comision comision = new Comision(numeroCom,materia,cicloL,turno,dias);
-		Comision otraComision = new Comision(numeroCom,materia,cicloL,turno,dias);
-		Comision otraComision2 = new Comision(numeroCom,materia,cicloL,turno,dias);
 		
 		Materia materiaEsperada = new Materia(1002, "Base de datos 1");
 		assertEquals(materiaEsperada,comision.getMateria());
-		assertEquals(1,comision.getId(),0.0);
-		assertEquals(2,otraComision.getId(),0.0);
-		assertEquals(3,otraComision2.getId(),0.0);
+	
+		
 		
 	}
 

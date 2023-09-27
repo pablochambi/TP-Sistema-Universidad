@@ -11,9 +11,14 @@ public class testMateria {
 		
 		String nombre = "Pb2";
 		Integer codigo = 1212;
-		Materia mat = new Materia(codigo, nombre);
-		Materia mat2 = new Materia(255, "Bd1");
-		Materia mat3 = new Materia(344, "Pw1");
+		
+		Materia mat,mat2,mat3;
+		mat = mat2 = mat3 = new Materia();
+		
+		
+		 mat = new Materia(codigo, nombre);
+		 mat2 = new Materia(255, "Bd1");
+		 mat3 = new Materia(344, "Pw1");
 		 
 		assertEquals(nombre,mat.getNombre());
 		

@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class Alumno{
 
-	private static int next_id_alu = 1;
+	private static int next_id_alu;
 	private int id;
 	private Integer dni;
 	private String nombre;
@@ -13,6 +13,13 @@ public class Alumno{
 	private LocalDate fechaNac;
 	private LocalDate fechaIngreso;
 
+	
+	public Alumno() {
+		this.dni=0;
+		this.nombre="\0";
+		this.apellido="\0";
+		this.id =next_id_alu= 1;
+	}
 	public Alumno(Integer dni, String nombre, String apellido,
 			LocalDate fechaNac, LocalDate fechaIngreso) {
 		
@@ -24,6 +31,8 @@ public class Alumno{
 		this.id = next_id_alu;
 		next_id_alu++;
 	}
+
+	
 
 	public Integer getDni() {
 		return dni;

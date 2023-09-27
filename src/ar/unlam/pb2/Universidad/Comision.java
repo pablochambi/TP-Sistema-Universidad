@@ -22,6 +22,7 @@ public class Comision {
 		this.id = NEXT_ID;
 		NEXT_ID++;
 	}
+	
 
 	public Integer getNumeroCom() {
 		return numeroCom;

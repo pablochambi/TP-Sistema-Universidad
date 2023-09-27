@@ -10,6 +10,12 @@ public class Materia {
 	private Integer codigo;
 	private String nombre;
 	private HashSet <Materia> materiasCorrelativas;
+	
+	public Materia() {
+		this.codigo=0;
+		this.nombre="\0";
+		this.id = NEXT_ID = 1;
+	}
 
 	public Materia(Integer codigo, String nombre) {
 		this.codigo = codigo;
@@ -20,6 +26,7 @@ public class Materia {
 		NEXT_ID++;
 	}
 	
+
 
 	public String getNombre() {
 		return nombre;

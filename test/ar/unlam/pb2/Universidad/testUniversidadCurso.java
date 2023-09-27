@@ -39,13 +39,5 @@ public class testUniversidadCurso {
 	}
 	
 	
-//	queSePuedaCrearDosCursosConLaMismaMateriaHorarioCicloLectivoPeroDistintaAula
-//	queNoSePuedaCrearDosCursosConElMismoCodigo
-//	queNoSePuedaCrearDosCursosConLaMismaMateriaHorarioCiclosLectivoYAula
-//	queSePuedaCrearDosCursosConIgualesMateriasHorariosYaulasPeroDistintoCicloLectivo
-//	queSePuedaCrearDosCursosConIgualesMateriasAulasYCiclosLectivosPeroDistintosHorarios
-
-	
-	
 	
 }
