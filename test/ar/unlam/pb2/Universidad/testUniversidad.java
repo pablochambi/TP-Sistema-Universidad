@@ -887,7 +887,6 @@ public class testUniversidad {
 		assertEquals(cantidadEsperada,unlam.cantidadDeProfesEnUnCurso(codCurso));
 	}
 	
-	
 	//obtenerListadoMateriasAprobadasParaUnAlumno(idAlumno)
 	//Dni nombre apellido nombreMateria Nota descripción cicloLectivo
 	
@@ -949,7 +948,7 @@ public class testUniversidad {
 		//PB1 //APROBADA
 		Nota nota1 = new Nota(TipoParcial.PRIMER_PARCIAL, 8);
 		Nota nota2 = new Nota(TipoParcial.SEGUNDO_PARCIAL, 2);
-		Nota nota3 = new Nota(TipoParcial.RECU_2DO_PARCIAL, 7);
+		Nota nota3 = new Nota(TipoParcial.RECU_2DO_PARCIAL, 8);
 		assertTrue(unlam.registrarUnaNota(codCursoCorrelativo,dniAlumno,nota1));
 		assertTrue(unlam.registrarUnaNota(codCursoCorrelativo,dniAlumno,nota2));
 		assertTrue(unlam.registrarUnaNota(codCursoCorrelativo,dniAlumno,nota3));
@@ -968,121 +967,36 @@ public class testUniversidad {
 		//APROBADA
 		Nota nota7 = new Nota(TipoParcial.PRIMER_PARCIAL, 9);
 		Nota nota8 = new Nota(TipoParcial.SEGUNDO_PARCIAL, 2);
-		Nota nota9 = new Nota(TipoParcial.RECU_2DO_PARCIAL, 7);
+		Nota nota9 = new Nota(TipoParcial.RECU_2DO_PARCIAL, 9);
 		assertTrue(unlam.registrarUnaNota(codCurso,dniAlumno,nota7));
 		assertTrue(unlam.registrarUnaNota(codCurso,dniAlumno,nota8));
 		assertTrue(unlam.registrarUnaNota(codCurso,dniAlumno,nota9));
 		
-		
-		HashSet<Materia> materiasEsperadas = new HashSet<>();
-		materiasEsperadas.add(new Materia(codMateriaCorrelativa, nomMateriaCorrelativa));//PB1
-		materiasEsperadas.add(new Materia(codMateria, nomMateria));//PB2
+//		obtenerListadoMateriasAprobadasParaUnAlumno(idAlumno)
+//		Ejemplo
+//		Dni 	|nombre  |apellido  |nombreMateria   |Nota  |cicloLectivo
+//		2323	|Lucas 	 |Moreno	|Prog. Basica 1  |8     | 2023-03-07 hasta 2023-06-06"
+//		2323	|Lucas 	 |Moreno	|Prog. Basica 2  |9     | 2023-03-07 hasta 2023-06-06"
+
+		ArrayList<String> reporteDeMateriasAprobadasEsperadas = new ArrayList<>();
 				
-		HashSet<Materia> materiasObtenidas = unlam.obtenerMateriasAprobadas(dniAlumno);
+		String reporte1 = "2323 |Lucas |Moreno |Prog. Basica 2 |9 |2023-07-22 hasta 2023-11-11";
+		String reporte2 = "2323 |Lucas |Moreno |Prog. Basica 1 |8 |2023-03-07 hasta 2023-06-06";
 		
-		for(Materia matObtenida : materiasObtenidas) {
-			assertTrue(materiasEsperadas.contains(matObtenida));
+		reporteDeMateriasAprobadasEsperadas.add(reporte1);
+		reporteDeMateriasAprobadasEsperadas.add(reporte2);
+		
+		ArrayList<String> reporteDereporteDeMateriasAprobadasObtenidos = unlam.obtenerReporteDeMateriasAprobadas(dniAlumno);
+		
+		assertTrue(reporteDereporteDeMateriasAprobadasObtenidos.size()==2);
+		
+		for(int i = 0;i<reporteDereporteDeMateriasAprobadasObtenidos.size();i++) {
+			assertEquals(reporteDeMateriasAprobadasEsperadas.get(i),reporteDereporteDeMateriasAprobadasObtenidos.get(i));
 		}
 		
 		
 	}
 	
-	@Test
-	public void queSePuedaObtenerUnListadoDe3MateriasAprobadasParaUnAlumno_igualOMAyorA7() {
-		
-		Universidad unlam = new Universidad("Unlam");
-		
-		Integer numAula=22, cantMax = 5;
-		unlam.registrarAula( new Aula(numAula, cantMax));
-		
-		Integer codMateria = 1000 ,codMateria2 = 1002, codMateriaCorrelativa = 1001;
-		String nomMateria = "Prog. Basica 2", nomMateriaCorrelativa = "Prog. Basica 1",
-				nomMateria2 = "Ingles Tec. 1";
-		
-		Materia materiaCorr =  new Materia(codMateriaCorrelativa, nomMateriaCorrelativa);
-		Materia materia2 = new Materia(codMateria2, nomMateria2);
-		Materia materia =  new Materia(codMateria, nomMateria);
-		
-		unlam.registrarMateria(materiaCorr);//PB1
-		unlam.registrarMateria(materia2 );//IT1
-		unlam.registrarMateria(materia);//PB2
-		unlam.asignarUnaMateriaCorrelativa(codMateria, codMateriaCorrelativa);
-		
-		Integer codCicloL = 11, codCicloL2 = 12;
-		CicloLectivo cicloL = new CicloLectivo(codCicloL,  LocalDate.of(2023, 2, 15),LocalDate.of(2023,3,1),LocalDate.of(2023, 3, 7),LocalDate.of(2023, 6, 6));
-		CicloLectivo cicloL2 = new CicloLectivo(codCicloL2,  LocalDate.of(2023, 7, 15),LocalDate.of(2023,7,20),LocalDate.of(2023, 7, 22),LocalDate.of(2023, 11, 11));
-		unlam.crearCicloLectivo(cicloL);
-		unlam.crearCicloLectivo(cicloL2);
-		
-		Integer numComisionCorr = 13, numComision2 = 14, numComision = 15 ;
-		Turno turno = Turno.MANIANA;
-		Dias dias = Dias.MARTES_Y_JUEVES;
-		Dias dias2 = Dias.MIERCOLES;
-		unlam.registrarComision(numComisionCorr,codMateriaCorrelativa,codCicloL,turno,dias);//PB1/1C
-		unlam.registrarComision(numComision2,codMateria2,codCicloL,turno,dias2);//IngTec1/1C
-		
-		unlam.registrarComision(numComision,codMateria,codCicloL2,turno,dias);//PB2/2C
-		
-		
-		
-		Integer codCursoCorrelativo = 1,codCurso2 = 2, codCurso = 3 ;
-		unlam.crearUnCurso(codCursoCorrelativo,numComisionCorr,numAula);//PB1
-		unlam.crearUnCurso(codCurso2,numComision2,numAula);//IngTec1
-		
-		unlam.crearUnCurso(codCurso,numComision,numAula);//PB2
-		
-		
-		
-		Integer dniAlumno = 2323;
-		Alumno alumno = new Alumno(dniAlumno, "Lucas", "Moreno", LocalDate.of(1998, 3, 3), LocalDate.of(2022, 3, 3));
-		unlam.ingresarAlumno(alumno);
-		
-		LocalDate fechaInscripcion = LocalDate.of(2023, 2, 20);
-		assertTrue(unlam.inscribirUnAlumnoAUnCurso(dniAlumno, codCursoCorrelativo,fechaInscripcion));//PB1
-		assertTrue(unlam.inscribirUnAlumnoAUnCurso(dniAlumno, codCurso2,fechaInscripcion));//IngTec1
-		
-		
-		//PB1 //APROBADA
-		Nota nota1 = new Nota(TipoParcial.PRIMER_PARCIAL, 8);
-		Nota nota2 = new Nota(TipoParcial.SEGUNDO_PARCIAL, 2);
-		Nota nota3 = new Nota(TipoParcial.RECU_2DO_PARCIAL, 7);
-		assertTrue(unlam.registrarUnaNota(codCursoCorrelativo,dniAlumno,nota1));
-		assertTrue(unlam.registrarUnaNota(codCursoCorrelativo,dniAlumno,nota2));
-		assertTrue(unlam.registrarUnaNota(codCursoCorrelativo,dniAlumno,nota3));
-		
-		//IT1 //APROBADA
-		Nota nota4 = new Nota(TipoParcial.PRIMER_PARCIAL, 7);
-		Nota nota5 = new Nota(TipoParcial.SEGUNDO_PARCIAL, 2);
-		Nota nota6 = new Nota(TipoParcial.RECU_2DO_PARCIAL, 7);
-		assertTrue(unlam.registrarUnaNota(codCurso2,dniAlumno,nota4));
-		assertTrue(unlam.registrarUnaNota(codCurso2,dniAlumno,nota5));
-		assertTrue(unlam.registrarUnaNota(codCurso2,dniAlumno,nota6));
-		
-		//Me anoto a PB2
-		LocalDate fechaInscripcion2 = LocalDate.of(2023, 7, 16);
-		assertTrue(unlam.inscribirUnAlumnoAUnCurso(dniAlumno, codCurso,fechaInscripcion2));
-		//APROBADA
-		Nota nota7 = new Nota(TipoParcial.PRIMER_PARCIAL, 9);
-		Nota nota8 = new Nota(TipoParcial.SEGUNDO_PARCIAL, 2);
-		Nota nota9 = new Nota(TipoParcial.RECU_2DO_PARCIAL, 7);
-		assertTrue(unlam.registrarUnaNota(codCurso,dniAlumno,nota7));
-		assertTrue(unlam.registrarUnaNota(codCurso,dniAlumno,nota8));
-		assertTrue(unlam.registrarUnaNota(codCurso,dniAlumno,nota9));
-		
-		
-		HashSet<Materia> materiasEsperadas = new HashSet<>();
-		materiasEsperadas.add(new Materia(codMateriaCorrelativa, nomMateriaCorrelativa));//PB1
-		materiasEsperadas.add(new Materia(codMateria, nomMateria));//PB2
-		materiasEsperadas.add(new Materia(codMateria2, nomMateria2));//IT1
-		
-		
-		HashSet<Materia> materiasObtenidas = unlam.obtenerMateriasAprobadas(dniAlumno);
-		
-		for(Materia matObtenida : materiasObtenidas) {
-			assertTrue(materiasEsperadas.contains(matObtenida));
-		}
-		
-	}
 	
 	@Test
 	public void queSePuedaObtenerUnReporteDeNotasDeLosAlumnosDeUnCurso() {

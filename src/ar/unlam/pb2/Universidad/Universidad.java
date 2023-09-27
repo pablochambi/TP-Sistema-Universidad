@@ -655,8 +655,43 @@ public class Universidad {
 		return reporteDeNotasDeAlumnos;
 		
 	}
-
 	
+//	obtenerListadoMateriasAprobadasParaUnAlumno(idAlumno)
+//	Ejemplo
+//	Dni nombre apellido nombreMateria Nota descripción cicloLectivo
+//	222  Juan   Perez         PB2                      7          20232C
+//	222  Juan   Perez         PB1                      7          20231C
+
+
+	public ArrayList<String> obtenerReporteDeMateriasAprobadas(Integer dniAlumno) {
+		
+		Alumno alumnoBus = buscarAlumnoPorDni(dniAlumno);
+		ArrayList<String> reporteDeMateriasAprobadas = new ArrayList<>();
+		
+		if(this.cursosAlumnos.size()==0)
+			return null;
+		
+		for(CursoAlumno curAlu: this.cursosAlumnos) {
+			String dni, nombreA, apellido,materia,nota,fclInicio,fclFin,cicloLectivo,reporte;
+			dni = nombreA = apellido=materia=nota=fclInicio=fclFin=cicloLectivo=reporte=null;
+			
+			if(curAlu.getAlumno().equals(alumnoBus) && curAlu.getPromociono()) {
+				dni = Integer.toString(alumnoBus.getDni());
+				nombreA = alumnoBus.getNombre();
+				apellido = alumnoBus.getApellido();
+				materia = curAlu.getMateria().getNombre();
+				nota = Integer.toString(curAlu.getNotaFinal());
+				fclInicio = curAlu.getCurso().getComision().getCicloLectivo().getFechaInicioCl().toString();
+				fclFin = curAlu.getCurso().getComision().getCicloLectivo().getFechaFinalizacionCl().toString();
+				cicloLectivo = fclInicio +" hasta "+fclFin;
+				reporte = dni+" |"+nombreA+" |"+apellido+" |"+materia+" |"+nota+" |"+cicloLectivo;
+				
+				reporteDeMateriasAprobadas.add(reporte);
+			}
+		
+		}
+		return reporteDeMateriasAprobadas;
+	}
 
 	
 
