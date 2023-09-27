@@ -15,9 +15,11 @@ public class Materia {
 		this.codigo = codigo;
 		this.nombre = nombre;
 		this.materiasCorrelativas = new HashSet<>();
+		
 		this.id = NEXT_ID;
 		NEXT_ID++;
 	}
+	
 
 	public String getNombre() {
 		return nombre;
@@ -67,6 +69,7 @@ public class Materia {
 	public Boolean eliminarCorrelativa(Materia materiaCorrelativaBus) {
 		return this.materiasCorrelativas.remove(materiaCorrelativaBus);
 	}
+
 
 	
 

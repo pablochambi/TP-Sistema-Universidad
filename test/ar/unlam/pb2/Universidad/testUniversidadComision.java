@@ -76,20 +76,44 @@ public class testUniversidadComision {
 	 * */
 	
 	@Test
-	public void queNoSePuedaCrear2ComisionesParaLaMismaMateriaCicloLectivoTurnoYHorario() {
+	public void queNoSePuedaCrear2ComisionesParaLaMismaMateriaCicloLectivoTurnoYDia() {
 		Universidad unlam = new Universidad("Unlam");
 		
-		Integer numComision = 1, codMateria =1001, codCicloL = 11;
+		Integer numComision = 1, otroNumCom = 2, codMateria =1001, codCicloL = 11;
 		
 		Materia materia = new Materia(codMateria, "pb2");
 		CicloLectivo cicloL = new CicloLectivo(codCicloL,  LocalDate.of(2023, 2, 15),LocalDate.of(2023,3,1),LocalDate.of(2023, 3, 7),LocalDate.of(2023, 7, 5));
-		Dias dias = Dias.MARTES_Y_JUEVES, dias2 = Dias.LUNES_Y_MIERCOLES;
-		Turno turno = Turno.MANIANA,turno2 = Turno.TARDE;
+		Dias dias = Dias.MARTES_Y_JUEVES;
+		Turno turno = Turno.MANIANA;
 		
 		unlam.registrarMateria(materia);
 		unlam.crearCicloLectivo(cicloL);
+		
 		unlam.registrarComision(numComision,codMateria,codCicloL,turno,dias);
-		unlam.registrarComision(2,codMateria,codCicloL,turno2,dias2);
+		unlam.registrarComision(otroNumCom,codMateria,codCicloL,turno,dias);
+		
+		Integer ve = 1;
+		Integer vo = unlam.obtenerCantidadDeComisiones();
+		assertEquals(ve,vo);
+	}
+	
+	@Test
+	public void queSePuedaCrear2ComisionesParaLaMismaMateriaCicloLectivoYDiaPeroDistintoTurno() {
+		Universidad unlam = new Universidad("Unlam");
+		
+		Integer numComision = 1, otroNumCom = 2, codMateria =1001, codCicloL = 11;
+		
+		Materia materia = new Materia(codMateria, "pb2");
+		CicloLectivo cicloL = new CicloLectivo(codCicloL,  LocalDate.of(2023, 2, 15),LocalDate.of(2023,3,1),LocalDate.of(2023, 3, 7),LocalDate.of(2023, 7, 5));
+		Dias dias = Dias.MARTES_Y_JUEVES;
+		Turno turnoM = Turno.MANIANA;
+		Turno turnoT = Turno.TARDE;
+		
+		unlam.registrarMateria(materia);
+		unlam.crearCicloLectivo(cicloL);
+		
+		unlam.registrarComision(numComision,codMateria,codCicloL,turnoM,dias);
+		unlam.registrarComision(otroNumCom,codMateria,codCicloL,turnoT,dias);
 		
 		Integer ve = 2;
 		Integer vo = unlam.obtenerCantidadDeComisiones();

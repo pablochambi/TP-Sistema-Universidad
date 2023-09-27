@@ -1,9 +1,12 @@
 package ar.unlam.pb2.Universidad;
 
+import java.util.HashSet;
 import java.util.Objects;
 
 public class Curso {
 
+	private static Integer NEXT_ID = 1;
+	private Integer id;
 	private Integer codigo;
 	private Comision comision;
 	private Aula aula;
@@ -12,6 +15,8 @@ public class Curso {
 		this.codigo = codigo;
 		this.aula = aula;
 		this.comision = comision;
+		this.id = NEXT_ID;
+		NEXT_ID++;
 	}
 	public Integer getCodigo() {
 		return codigo;
@@ -32,8 +37,6 @@ public class Curso {
 		this.aula = aula;
 	}
 
-
-
 	@Override
 	public int hashCode() {
 		return Objects.hash(codigo);
@@ -49,6 +52,11 @@ public class Curso {
 			return false;
 		Curso other = (Curso) obj;
 		return Objects.equals(codigo, other.codigo);
+	}
+	
+	
+	public String getNomMateria() {
+		return getComision().getMateria().getNombre();
 	}
 
 

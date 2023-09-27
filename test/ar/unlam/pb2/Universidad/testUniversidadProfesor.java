@@ -35,6 +35,7 @@ public class testUniversidadProfesor {
 		unlam.ingresarProfesor(profe2);
 		Integer cantEsperada = 1;
 		assertEquals(cantEsperada,unlam.getCantidadDeProfesIngresados());
+		
 	}
 	
 	

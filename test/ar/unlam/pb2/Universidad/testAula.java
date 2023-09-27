@@ -20,6 +20,7 @@ public class testAula {
 		assertEquals((Integer)1,aula.getId());
 		assertEquals((Integer)2,aula2.getId());
 		assertEquals((Integer)3,aula3.getId());
+		
 	}
 	
 	

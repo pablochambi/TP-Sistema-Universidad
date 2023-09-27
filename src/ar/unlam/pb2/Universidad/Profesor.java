@@ -42,7 +42,7 @@ public class Profesor{
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id);
+		return Objects.hash(dni);
 	}
 
 	@Override
@@ -54,9 +54,11 @@ public class Profesor{
 		if (getClass() != obj.getClass())
 			return false;
 		Profesor other = (Profesor) obj;
-		return Objects.equals(id, other.id);
+		return Objects.equals(dni, other.dni);
 	}
 
+
+	
 
 	
 	

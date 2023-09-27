@@ -4,13 +4,18 @@ import java.util.Objects;
 
 public class CursoProfe {
 
+	private static Integer NEXT_ID = 1;
+	private Integer id;
 	private Curso curso;
 	private Profesor profe;
 	
 	public CursoProfe(Curso curso, Profesor profe) {
 		this.curso = curso;
 		this.profe = profe;
+		this.id = NEXT_ID;
+		NEXT_ID++;
 	}
+	
 
 	public Curso getCurso() {
 		return curso;

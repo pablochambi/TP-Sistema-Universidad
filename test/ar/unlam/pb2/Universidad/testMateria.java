@@ -21,6 +21,7 @@ public class testMateria {
 		assertEquals((Integer)2,mat2.getId());
 		assertEquals((Integer)3,mat3.getId());
 		
+		
 	}
 
 }

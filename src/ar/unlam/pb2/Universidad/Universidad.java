@@ -1,5 +1,6 @@
 package ar.unlam.pb2.Universidad;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -88,14 +89,67 @@ public class Universidad {
 	public Boolean crearCurso(Curso curso) {
 		return this.cursos.add(curso);
 	}
-
+	public Integer cantidadDeCursos() {
+		return this.cursos.size();
+	}
+	public Integer obtenerCantidadDeCursos() {
+		return this.cursos.size();
+	}
+	
 	public Boolean ingresarProfesor(Profesor profe) {
 		return this.profesores.add(profe);
 	}
+	public Integer getCantidadDeProfesIngresados() {
+		return this.profesores.size();
+	}
+	
 	public Boolean ingresarAlumno(Alumno alumno) {
 		return this.alumnos.add(alumno);
 	}
+	public Integer getCantidadDeIngresantes() {
+		return this.alumnos.size();
+	}
 
+	public Boolean registrarMateria(Materia materia) {
+		return this.materias.add(materia);
+	}
+	public Integer obtenerCantidadDeMaterias() {
+		return this.materias.size();
+	}
+
+	public Boolean registrarAula(Aula aula) {
+		return this.aulas.add(aula);
+	}
+
+	public Boolean crearCicloLectivo(CicloLectivo cicloL) {
+		
+		if(this.ciclosLectivos.size()==0) {
+			return this.ciclosLectivos.add(cicloL);
+		}
+		
+		for(CicloLectivo cl : this.ciclosLectivos) {
+			Boolean laFechaFinalEsAnterior = cl.getFechaFinalizacionCl().isBefore(cicloL.getFechaInscripcion());
+			Boolean laFechaInicialEsPosterior = cl.getFechaInscripcion().isAfter(cicloL.getFechaFinalizacionCl());
+			
+			if(laFechaFinalEsAnterior || laFechaInicialEsPosterior)
+				return this.ciclosLectivos.add(cicloL);
+			
+		}
+		
+		return false;
+	}
+	
+	public Integer obtenerCantidadDeCiclosLectivosIngresados() {
+		return this.ciclosLectivos.size();
+	}
+
+	public Boolean registrarComision(Comision nueva) {
+		return this.comisiones.add(nueva);
+	}
+	public Integer obtenerCantidadDeComisiones() {
+		return this.comisiones.size();
+	}
+	
 	public ArrayList<Profesor> obtenerProfesoresDeUnCurso(Integer codigo) {
 		// TODO Auto-generated method stub
 		ArrayList<Profesor> listaDeProfes = new ArrayList<>();
@@ -106,53 +160,6 @@ public class Universidad {
 		}
 		return listaDeProfes;
 	}
-
-	public Integer getCantidadDeIngresantes() {
-		return this.alumnos.size();
-	}
-
-	public Integer cantidadDeCursos() {
-		return this.cursos.size();
-	}
-
-	public Integer getCantidadDeProfesIngresados() {
-		return this.profesores.size();
-	}
-
-//	public Boolean crearUnCurso(Integer comision, Integer codMat, Horario horario,
-//							CicloLectivo cicloLectivo, Integer codAula) {
-//		Materia materiaBus = buscarMateriaPorCodigo(codMat);
-//		Aula aulaBus = buscarAulaPorCodigo(codAula);
-//		
-//		if(materiaBus==null || aulaBus==null) {
-//			return false;
-//		}
-//		
-//		if(this.cantidadDeCursos()==0) {
-//			Curso curso = new Curso(comision, materiaBus, horario, cicloLectivo, aulaBus);
-//			return this.cursos.add(curso);
-//		}
-//		
-//		for(Curso cur: this.cursos) {
-//			Boolean horariosIguales = cur.getHorario().equals(horario);
-//			Boolean ciclosLectivosIguales =cur.getCicloLectivo().equals(cicloLectivo);
-//			Boolean aulasIguales = cur.getAula().equals(aulaBus);
-//			Boolean materiasIguales = cur.getMateria().equals(materiaBus);
-//			
-//			//Me aseguro que por lo menos no sea igual un campo
-//			if(materiasIguales &&  horariosIguales && ciclosLectivosIguales && aulasIguales) {
-//				return false;
-//			}
-//		}
-//		return this.cursos.add(new Curso(comision, materiaBus, horario, cicloLectivo, aulaBus));
-//	}
-	
-	
-	//QueNoSePuedaAsignarMasDeUnaMateriaAUnCurso
-	//QueNoSepuedaAsignarMasDeUnAulaAUnCurso
-	//QueNoSePuedaAsignarUnaMateriaAUnAulaOcupada
-
-	
 
 	private Aula buscarAulaPorCodigo(Integer codAula) {
 		for(Aula aula: this.aulas) {
@@ -172,13 +179,7 @@ public class Universidad {
 		return null;
 	}
 
-	public Boolean registrarMateria(Materia materia) {
-		return this.materias.add(materia);
-	}
-
-	public Boolean registrarAula(Aula aula) {
-		return this.aulas.add(aula);
-	}
+	
 
 	public Materia obtenerMateriaPorCodigoDeCurso(Integer codCurso) {
 		for(Curso curso: this.cursos) {
@@ -189,34 +190,7 @@ public class Universidad {
 		return null;
 	}
 
-	public Boolean inscribirUnProfeAUnCurso(Integer dniPro, Integer codCurso) {
-		Profesor profeBus = buscarProfePorDni(dniPro);
-		Curso cursoBus = buscarCursoPorCodigo(codCurso);
-		
-		if(profeBus == null || cursoBus == null)
-			return false;
-		
-		
-		//Si no esta cargado ninguna asignacion CursoProfe se ejecuta primero este codigo
-		if(this.cursosProfes.size()==0) {
-			CursoProfe cursoProfe = new CursoProfe(cursoBus, profeBus);
-			return this.cursosProfes.add(cursoProfe);
-		}
-		
-		for(CursoProfe curPro: this.cursosProfes) {
-			
-			Boolean cursosConIgualHorario = curPro.getCurso().getHorario().equals(cursoBus.getHorario());
-			Boolean cursosConIgualCicloectivo = curPro.getCurso().getCicloLectivo().equals(cursoBus.getCicloLectivo());
-			Boolean cursosConElMismoProfe = curPro.getProfe().equals(profeBus);
-			
-			if(cursosConIgualHorario && cursosConIgualCicloectivo && cursosConElMismoProfe) {
-				return false;
-			}
-		}
-		
-		return this.cursosProfes.add(new CursoProfe(cursoBus, profeBus));
-		
-	}
+
 	
 
 	private Curso buscarCursoPorCodigo(Integer codCurso) {
@@ -238,23 +212,82 @@ public class Universidad {
 	}
 
 	//queNoSePuedaInscribirUnAlumnoDosVecesAUnMismoCurso
-	public Boolean inscribirUnAlumnoAUnCurso(Integer dniAlu, Integer codCurso) {
+	
+	public Boolean inscribirUnAlumnoAUnCurso(Integer dniAlu, Integer codCurso, LocalDate fechaInscripcion) {
 		Alumno alumnoBus = buscarAlumnoPorDni(dniAlu);
 		Curso cursoBus = buscarCursoPorCodigo(codCurso);
+		Boolean seLLenoElAula = cantDeAlumnosDeUnCurso(codCurso) >= cursoBus.getAula().getCantMax();
 		
-		if(alumnoBus==null || cursoBus ==null)
-			return false;
-		
-		cursoBus.getAula().getCantMax();
-		
-		if(cantDeAlumnosDeUnCurso(codCurso) >= cursoBus.getAula().getCantMax()) {
+		if(alumnoBus==null || cursoBus ==null || seLLenoElAula||
+			!esteAlumnoAproboLasCorrelativasDeLaMateriaDeEsteCurso(cursoBus) ||
+			seEncontroOtroCursoConIgualDiaTurnoYCicloLectivoAlCualEstaInscriptoElAlumno(alumnoBus,cursoBus)||
+			aproboEsteAlumnoEstaMateriaDeEsteCurso(alumnoBus, cursoBus)) {
 			return false;
 		}
+		LocalDate fechaInicioInscripcion = cursoBus.getComision().getCicloLectivo().getFechaInscripcion();
+		LocalDate fechaFinInscripcion = cursoBus.getComision().getCicloLectivo().getFechaFinalizacionInscripcion();
 		
+		//Before = anterior, after = posterior
+		if(fechaInscripcion.isAfter(fechaInicioInscripcion) && fechaInscripcion.isBefore(fechaFinInscripcion))
+			return this.cursosAlumnos.add(new CursoAlumno(cursoBus, alumnoBus));
 		
-		CursoAlumno cursoAlumno = new CursoAlumno(cursoBus, alumnoBus);
+		return false;
 		
-		return this.cursosAlumnos.add(cursoAlumno);
+	}
+	
+	
+	
+	
+	private Boolean esteAlumnoAproboLasCorrelativasDeLaMateriaDeEsteCurso(Curso cursoBus) {
+		HashSet<Materia> materiasCorrelativas = cursoBus.getComision().getMateria().getMateriasCorrelativas();
+		if(materiasCorrelativas.size()==0) {
+			return true;
+		}
+		
+		for(CursoAlumno curAlu : this.cursosAlumnos) {
+			for(Materia materiaCorr : materiasCorrelativas) {
+				if(curAlu.getCurso().getComision().getMateria().equals(materiaCorr)) {
+					if(curAlu.getAprobo()) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	private Boolean seEncontroOtroCursoConIgualDiaTurnoYCicloLectivoAlCualEstaInscriptoElAlumno(Alumno alumnoBus, Curso cursoBus) {
+		
+		if(this.cursosAlumnos.size()==0)
+			return false;
+		
+		for(CursoAlumno curAlu : this.cursosAlumnos) {
+			Boolean losDiasSonIguales = curAlu.getCurso().getComision().getDias().equals(cursoBus.getComision().getDias());
+			Boolean elTurnoEsIgual = curAlu.getCurso().getComision().getTurno().equals(cursoBus.getComision().getTurno());
+			Boolean elCicloLectivoEsIgual = curAlu.getCurso().getComision().getCicloLectivo().equals(cursoBus.getComision().getCicloLectivo());
+			Boolean elAlumnoEsIgual = curAlu.getAlumno().equals(alumnoBus);
+			
+			if(losDiasSonIguales  && elTurnoEsIgual && elCicloLectivoEsIgual && elAlumnoEsIgual) 
+				return true;
+			
+		}
+		
+		return false;
+	}
+
+	private Boolean aproboEsteAlumnoEstaMateriaDeEsteCurso(Alumno alumnoBus, Curso cursoBus) {
+		
+		if(this.cursosAlumnos.size()==0)
+			return false;
+		
+		for(CursoAlumno curAlu : this.cursosAlumnos) {
+			Boolean lasMateriasSonIguales = curAlu.getCurso().getComision().getMateria().equals(cursoBus.getComision().getMateria());
+			Boolean losAlumnosSonIguales = curAlu.getAlumno().equals(alumnoBus);
+			Boolean aprobo = curAlu.getNotaFinal()>=4;
+			if(lasMateriasSonIguales && losAlumnosSonIguales && aprobo)
+				return true;
+		}
+		return false;
 	}
 
 	private Alumno buscarAlumnoPorDni(Integer dniAlu) {
@@ -288,25 +321,7 @@ public class Universidad {
 		return listaDeAlumnos;
 	}
 
-	public Integer obtenerCantidadDeMaterias() {
-		return this.materias.size();
-	}
-
-	public Boolean crearCicloLectivo(CicloLectivo cicloL) {
-		return this.ciclosLectivos.add(cicloL);
-	}
-
-	public Integer obtenerCantidadDeCiclosLectivosIngresados() {
-		return this.ciclosLectivos.size();
-	}
-
-	public Boolean registrarComision(Comision nueva) {
-		return this.comisiones.add(nueva);
-	}
-
-	public Integer obtenerCantidadDeComisiones() {
-		return this.comisiones.size();
-	}
+	
 
 	public Boolean registrarComision(Integer numComision, Integer codMateria, 
 			Integer codCicloL, Turno turno,Dias dias) {
@@ -316,6 +331,16 @@ public class Universidad {
 		
 		if(materiaBus==null ||cicloLBus==null) {
 			return false;
+		}
+		
+		for(Comision comision: this.comisiones) {
+			Boolean losDiasSonIguales = comision.getDias().equals(dias);
+			Boolean elTurnoEsIgual = comision.getTurno().equals(turno) ;
+			Boolean elCicloLectivoEsIgual = comision.getCicloLectivo().equals(cicloLBus);
+			Boolean laMateriaEsIgual = comision.getMateria().equals(materiaBus);
+			
+			if(losDiasSonIguales && elTurnoEsIgual && elCicloLectivoEsIgual && laMateriaEsIgual)
+				return false;
 		}
 		
 		Comision comision = new Comision(numComision, materiaBus, cicloLBus, turno, dias);
@@ -338,6 +363,7 @@ public class Universidad {
 		if(comisionBus==null ||aulaBus==null) {
 			return false;
 		}
+		
 		Curso curso = new Curso(codCurso, comisionBus, aulaBus);
 		return this.cursos.add(curso);
 		
@@ -352,17 +378,12 @@ public class Universidad {
 		return null;
 	}
 
-	public Integer obtenerCantidadDeCursos() {
-		return this.cursos.size();
-	}
-
 	public Boolean asignarUnaMateriaCorrelativa(Integer codMateria, Integer codMateriaCorrelativa) {
 		Materia materiaBus = buscarMateriaPorCodigo(codMateria);
 		Materia materiaCorrelativaBus = buscarMateriaPorCodigo(codMateriaCorrelativa);
 		
 		if(materiaBus==null || materiaCorrelativaBus==null)
 			return false;
-		
 		
 		return materiaBus.getMateriasCorrelativas().add(materiaCorrelativaBus);
 		
@@ -379,6 +400,263 @@ public class Universidad {
 		
 	}
 
+	public Integer obtenerCantidadDeAlumnosSegunCodigoDeCurso(Integer codCurso) {
+		
+		Integer contador=0;
+		Curso cursoBus = buscarCursoPorCodigo(codCurso);
+		
+		for(CursoAlumno curAlu: this.cursosAlumnos) {
+			if(curAlu.getCurso().equals(cursoBus)) {
+				contador++;
+			}
+		}
+		
+		return contador;
+	}
+	
+	
+/////////////
+	public Boolean registrarUnaNota(Integer codCurso, Integer dniAlumno, Nota nota) {
+		// TODO Auto-generated method stub
+		Curso cursoBus = buscarCursoPorCodigo(codCurso);
+		Alumno alumnoBus = buscarAlumnoPorDni(dniAlumno);
+		
+		if(cursoBus==null || alumnoBus==null)
+			return false;
+		
+		for(CursoAlumno curAlu:this.cursosAlumnos) {
+			
+			Boolean seEncontroCursoAlumno = curAlu.getAlumno().equals(alumnoBus) && curAlu.getCurso().equals(cursoBus);
+			Boolean hayMenosDe4Notas = curAlu.getNotas().size()<3;//Solo admite 3 notas
+			Boolean hayUnaNotaCargada = curAlu.getNotas().size()!=0;
+			
+			HashSet<Materia> materiasCorrelativas = cursoBus.getComision().getMateria().getMateriasCorrelativas();
+			
+			if(seEncontroCursoAlumno) {
+				
+				for(CursoAlumno cuAl : this.cursosAlumnos) {
+					for(Materia mat: materiasCorrelativas) {
+						if(cuAl.getAlumno().equals(alumnoBus) &&
+								cuAl.getCurso().getComision().getMateria().equals(mat)) {
+							if(!cuAl.getPromociono() && nota.getValor()>=7) {
+								return false;
+							}
+						}
+						
+					}
+				}
+				
+				if(!hayUnaNotaCargada) {
+					
+					return curAlu.getNotas().add(nota);
+				}
+				
+				if(hayMenosDe4Notas){
+					for(Nota notaa: curAlu.getNotas()) {
+						if(!notaa.getTipoParcial().equals(nota.getTipoParcial())) {
+							return curAlu.getNotas().add(nota);
+						}
+					}
+				}
+				
+			}
+		}
+		
+		return false;
+	}
+	
+
+	public Integer obtenerNotaPrimerParcialDeUnAlumnoEnUnCurso(Integer dniAlumno, Integer codCurso) {
+		Curso cursoBus = buscarCursoPorCodigo(codCurso);
+		Alumno alumnoBus = buscarAlumnoPorDni(dniAlumno);
+		
+		if(cursoBus==null || alumnoBus==null)
+			return null;
+		
+		for(CursoAlumno curAlu:this.cursosAlumnos) {
+			if(curAlu.getAlumno().equals(alumnoBus) && curAlu.getCurso().equals(cursoBus)) {
+				return curAlu.obtenerNotaDelPrimerParcial();
+			}
+		}
+		
+		return null;
+	}
+
+	public Integer obtenerCantidadDeNotasCargadasDeUnAlumnoEnUnCurso(Integer dniAlumno, Integer codCurso) {
+		Curso cursoBus = buscarCursoPorCodigo(codCurso);
+		Alumno alumnoBus = buscarAlumnoPorDni(dniAlumno);
+		
+		if(cursoBus==null || alumnoBus==null)
+			return null;
+		
+		for(CursoAlumno curAlu:this.cursosAlumnos) {
+			if(curAlu.getAlumno().equals(alumnoBus) && curAlu.getCurso().equals(cursoBus)) {
+				return curAlu.getNotas().size();
+			}
+		}
+		
+		return null;
+	}
+
+	public Integer obtenerCantidadDeInscripcionesDeUnAlumnoSegunDniAlumno(Integer dniAlumno) {
+		Integer contar = 0;
+		Alumno alumnoBus = buscarAlumnoPorDni(dniAlumno);
+		
+		for(CursoAlumno curAlu: this.cursosAlumnos) {
+			if(curAlu.getAlumno().equals(alumnoBus)) {
+				contar++;
+			}
+		}
+		return contar;
+	}
+
+	public Boolean asignarProfesorAUnCurso(Integer dniPro, Integer codCurso) {
+		Profesor profeBus = buscarProfePorDni(dniPro);
+		Curso cursoBus = buscarCursoPorCodigo(codCurso);
+		
+		if(profeBus == null || cursoBus == null)
+			return false;
+		
+		if(this.cursosProfes.size()==0) {
+			CursoProfe cursoProfe = new CursoProfe(cursoBus, profeBus);
+			return this.cursosProfes.add(cursoProfe);
+		}
+		
+		if(this.cursosProfes.contains(new CursoProfe(cursoBus, profeBus)))
+			return false;
+		
+		Integer cantAlumnos = obtenerCantidadDeAlumnosSegunCodigoDeCurso(codCurso);
+		int cantidadDeProfesAAsignar = 0;
+		
+		if(cantAlumnos%20 == 0) {
+			 cantidadDeProfesAAsignar = cantAlumnos/20;
+		}
+		if(cantAlumnos!=0) {
+			cantidadDeProfesAAsignar = cantAlumnos/20 + 1;
+		}
+			
+		if(cantidadDeProfesEnUnCurso(codCurso)>=cantidadDeProfesAAsignar)
+			return false;
+		
+		for(CursoProfe curPro: this.cursosProfes) {
+			
+			Boolean cursosConIgualDia = curPro.getCurso().getComision().getDias().equals(cursoBus.getComision().getDias());
+			Boolean cursosConIgualCicloectivo = curPro.getCurso().getComision().getCicloLectivo().equals(cursoBus.getComision().getCicloLectivo());
+			Boolean cursosConIgualTurno = curPro.getCurso().getComision().getTurno().equals(cursoBus.getComision().getTurno());
+			Boolean cursosConElMismoProfe = curPro.getProfe().equals(profeBus);
+			
+			if(cursosConIgualDia && cursosConIgualCicloectivo && cursosConElMismoProfe && cursosConIgualTurno) 
+				return false;
+			
+		}
+		
+		Integer contarAsignacion = 0;
+		
+		Boolean resultado = this.cursosProfes.add(new CursoProfe(cursoBus, profeBus));
+		if(resultado)
+			contarAsignacion++;
+		
+		return resultado;
+	}
+
+	public Integer cantidadDeProfesEnUnCurso(Integer codCurso) {
+		// TODO Auto-generated method stub
+		Integer contador=0;
+		Curso cursoBus = buscarCursoPorCodigo(codCurso);
+		
+		for(CursoProfe curPro: this.cursosProfes) {
+			if(curPro.getCurso().equals(cursoBus))
+				contador++;
+		}
+		
+		return contador;
+	}
+
+	public Integer obtenerNotaFinalDeUnAlumno(Integer dniAlumno, Integer codMateria) {
+		// TODO Auto-generated method stub
+		Alumno alumnoBus = buscarAlumnoPorDni(dniAlumno);
+		Materia materiaBus = buscarMateriaPorCodigo(codMateria);
+		
+		if(alumnoBus == null || materiaBus == null)
+			return null;
+		
+		for(CursoAlumno curAlu : this.cursosAlumnos) {
+			if(curAlu.getAlumno().equals(alumnoBus) && 
+				curAlu.getCurso().getComision().getMateria().equals(materiaBus)) {
+				
+				return curAlu.getNotaFinal();
+			}
+		}
+		
+		
+		return null;
+	}
+
+	public HashSet<Materia> obtenerMateriasAprobadas(Integer dniAlumno) {
+		
+		HashSet<Materia> materiasAprobadas = new HashSet<>();
+		Alumno alumnoBus = buscarAlumnoPorDni(dniAlumno);
+		
+		if(this.cursosAlumnos.size()==0)
+			return null;
+		
+		for(CursoAlumno curAlu: this.cursosAlumnos) {
+			if(curAlu.getAlumno().equals(alumnoBus) && curAlu.getPromociono()) 
+				materiasAprobadas.add(curAlu.getMateria());
+		}
+		return materiasAprobadas;
+	}
+
+	public HashSet<Materia> obtenerMateriasQueFaltanCursar(Integer dniAlumno) {
+
+		HashSet<Materia> copiaMat = new HashSet<>(this.materias);
+		
+		HashSet<Materia> materiasAprobadas = obtenerMateriasAprobadas(dniAlumno);
+		
+		copiaMat.removeAll(materiasAprobadas);
+		
+		return copiaMat;
+		
+	}
+	
+	
+	
+	//Reporte de notas de alumnos(idCurso)
+//	Curso  nombreMateria Dni nombre apellido Nota
+	//12	Pb1			2342	Pablo Chambi   7
+	//12   Pb1		    3453    Natalia Chambi 5
+	
+	public ArrayList<ReporteDeNotaDeAlumno> obtenerReporteDeNotasDeAlumnos(Integer codCursoBus) {
+		
+		Curso cursoBus = buscarCursoPorCodigo(codCursoBus);
+		ArrayList<ReporteDeNotaDeAlumno> reporteDeNotasDeAlumnos = new ArrayList<>();
+		
+		if(cursoBus==null)
+			return null;
+		
+		if(this.cursosAlumnos.size()==0)
+			return null;
+		
+		for(CursoAlumno curAlu: this.cursosAlumnos) {
+			if(curAlu.getCurso().equals(cursoBus)) {
+				Integer codCurso =cursoBus.getCodigo();
+				String nomMateria = cursoBus.getNomMateria();
+				Integer dniAlumno = curAlu.getAlumno().getDni();
+				String nomAlumno = curAlu.getAlumno().getNombre();
+				String apeAlumno = curAlu.getAlumno().getApellido();
+				Integer nota = curAlu.getNotaFinal();
+				
+				ReporteDeNotaDeAlumno reporte = new ReporteDeNotaDeAlumno(codCurso, nomMateria, dniAlumno, nomAlumno, apeAlumno, nota);
+				reporteDeNotasDeAlumnos.add(reporte);
+			}
+				
+		}
+		
+		return reporteDeNotasDeAlumnos;
+		
+	}
+
+	
 
 	
 

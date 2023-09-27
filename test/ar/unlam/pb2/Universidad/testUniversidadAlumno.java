@@ -36,7 +36,6 @@ public class testUniversidadAlumno {
 		assertEquals(cantEsperada,unlam.getCantidadDeIngresantes());
 	}
 	
-	
 	@Test
 	public void queNoSePuedaIngresarADosAlumnosConElMismoDni() {
 		Universidad unlam = new Universidad("Unlam");
