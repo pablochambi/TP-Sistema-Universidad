@@ -993,10 +993,7 @@ public class testUniversidad {
 		for(int i = 0;i<reporteDereporteDeMateriasAprobadasObtenidos.size();i++) {
 			assertEquals(reporteDeMateriasAprobadasEsperadas.get(i),reporteDereporteDeMateriasAprobadasObtenidos.get(i));
 		}
-		
-		
 	}
-	
 	
 	@Test
 	public void queSePuedaObtenerUnReporteDeNotasDeLosAlumnosDeUnCurso() {
